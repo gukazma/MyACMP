@@ -23,6 +23,8 @@ set(CMAKE_MODULE_PATH "D:/ThirdParty/cmake" ${CMAKE_MODULE_PATH})
 include(CMakeModules/doxygen.cmake)
 include(CMakeModules/dependency-graph.cmake)
 include(CMakeModules/formatting.cmake)
+include(CMakeModules/ShaderCompile.cmake)
+
 # ---- Include guards ----
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(
@@ -30,6 +32,8 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
       "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
   )
 endif()
+
+find_package(Vulkan REQUIRED)
 
 add_subdirectory(Modules)
 add_subdirectory(Apps)
@@ -46,7 +50,6 @@ if(CLANG_FORMAT_EXE)
   file(GLOB_RECURSE FFILES ${CMAKE_SOURCE_DIR}/Modules/*.[hc] ${CMAKE_SOURCE_DIR}/Modules/*.[hc]pp ${CMAKE_SOURCE_DIR}/Apps/*.[hc] ${CMAKE_SOURCE_DIR}/Apps/*.[hc]pp)
   clang_format(${PROJECT_NAME}Format ${FFILES})
   set_target_properties(${PROJECT_NAME}Format PROPERTIES FOLDER Tools)
-  add_dependencies(${PROJECT_NAME}CommonPrecompiledHeaders ${PROJECT_NAME}Format)
 endif()
 
 if(DOT_EXE)
